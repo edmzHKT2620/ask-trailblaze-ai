@@ -1,5 +1,5 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { ArrowRight, BookOpen, Compass, GraduationCap, Heart, Sparkles } from "lucide-react";
+import { ArrowRight, BookOpen, Compass, GraduationCap, Heart, MessageCircle, Sparkles } from "lucide-react";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -72,10 +72,11 @@ function Index() {
 
             <div className="mt-8 flex flex-wrap items-center justify-center gap-3">
               <Link
-                to="/education"
+                to="/ai-chat"
                 className="group inline-flex items-center gap-2 rounded-full bg-gradient-hero px-6 py-3 text-sm font-semibold text-white shadow-glow transition-transform hover:-translate-y-0.5"
               >
-                Start the journey
+                <MessageCircle className="h-4 w-4" />
+                Start Ai Chat
                 <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
               </Link>
               <a

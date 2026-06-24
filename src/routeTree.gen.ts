@@ -12,6 +12,7 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as MentalHealthRouteImport } from './routes/mental-health'
 import { Route as MajorRouteImport } from './routes/major'
 import { Route as EducationRouteImport } from './routes/education'
+import { Route as AiChatRouteImport } from './routes/ai-chat'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as ApiChatRouteImport } from './routes/api/chat'
 
@@ -30,6 +31,11 @@ const EducationRoute = EducationRouteImport.update({
   path: '/education',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AiChatRoute = AiChatRouteImport.update({
+  id: '/ai-chat',
+  path: '/ai-chat',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
@@ -43,6 +49,7 @@ const ApiChatRoute = ApiChatRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/ai-chat': typeof AiChatRoute
   '/education': typeof EducationRoute
   '/major': typeof MajorRoute
   '/mental-health': typeof MentalHealthRoute
@@ -50,6 +57,7 @@ export interface FileRoutesByFullPath {
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/ai-chat': typeof AiChatRoute
   '/education': typeof EducationRoute
   '/major': typeof MajorRoute
   '/mental-health': typeof MentalHealthRoute
@@ -58,6 +66,7 @@ export interface FileRoutesByTo {
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/ai-chat': typeof AiChatRoute
   '/education': typeof EducationRoute
   '/major': typeof MajorRoute
   '/mental-health': typeof MentalHealthRoute
@@ -65,12 +74,25 @@ export interface FileRoutesById {
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/education' | '/major' | '/mental-health' | '/api/chat'
+  fullPaths:
+    | '/'
+    | '/ai-chat'
+    | '/education'
+    | '/major'
+    | '/mental-health'
+    | '/api/chat'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/education' | '/major' | '/mental-health' | '/api/chat'
+  to:
+    | '/'
+    | '/ai-chat'
+    | '/education'
+    | '/major'
+    | '/mental-health'
+    | '/api/chat'
   id:
     | '__root__'
     | '/'
+    | '/ai-chat'
     | '/education'
     | '/major'
     | '/mental-health'
@@ -79,6 +101,7 @@ export interface FileRouteTypes {
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  AiChatRoute: typeof AiChatRoute
   EducationRoute: typeof EducationRoute
   MajorRoute: typeof MajorRoute
   MentalHealthRoute: typeof MentalHealthRoute
@@ -108,6 +131,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof EducationRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/ai-chat': {
+      id: '/ai-chat'
+      path: '/ai-chat'
+      fullPath: '/ai-chat'
+      preLoaderRoute: typeof AiChatRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/': {
       id: '/'
       path: '/'
@@ -127,6 +157,7 @@ declare module '@tanstack/react-router' {
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  AiChatRoute: AiChatRoute,
   EducationRoute: EducationRoute,
   MajorRoute: MajorRoute,
   MentalHealthRoute: MentalHealthRoute,
