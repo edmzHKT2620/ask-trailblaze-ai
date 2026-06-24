@@ -1,5 +1,5 @@
 import { Link, useRouterState } from "@tanstack/react-router";
-import { Compass, GraduationCap, Heart, Home, Moon, Sparkles, Sun } from "lucide-react";
+import { Compass, GraduationCap, Heart, Home, MessageCircle, Moon, Sparkles, Sun } from "lucide-react";
 import { useEffect, useState } from "react";
 import { cn } from "@/lib/utils";
 
@@ -8,6 +8,7 @@ const links = [
   { to: "/education", label: "Education", icon: GraduationCap },
   { to: "/major", label: "Major", icon: Sparkles },
   { to: "/mental-health", label: "Wellness", icon: Heart },
+  { to: "/ai-chat", label: "AI Chat", icon: MessageCircle },
 ];
 
 function ThemeToggle() {
@@ -79,6 +80,7 @@ export function BottomNav() {
   return (
     <nav className="fixed inset-x-0 bottom-0 z-40 border-t border-border/60 bg-background/90 backdrop-blur-xl md:hidden">
       <div className="mx-auto grid max-w-md grid-cols-4">
+        {/* Note: grid-cols matches link count below */}
         {links.map((l) => {
           const active = l.to === "/" ? path === "/" : path.startsWith(l.to);
           const Icon = l.icon;
