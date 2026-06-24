@@ -13,6 +13,7 @@ import { Route as MentalHealthRouteImport } from './routes/mental-health'
 import { Route as MajorRouteImport } from './routes/major'
 import { Route as EducationRouteImport } from './routes/education'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as ApiChatRouteImport } from './routes/api/chat'
 
 const MentalHealthRoute = MentalHealthRouteImport.update({
   id: '/mental-health',
@@ -34,18 +35,25 @@ const IndexRoute = IndexRouteImport.update({
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ApiChatRoute = ApiChatRouteImport.update({
+  id: '/api/chat',
+  path: '/api/chat',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/education': typeof EducationRoute
   '/major': typeof MajorRoute
   '/mental-health': typeof MentalHealthRoute
+  '/api/chat': typeof ApiChatRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/education': typeof EducationRoute
   '/major': typeof MajorRoute
   '/mental-health': typeof MentalHealthRoute
+  '/api/chat': typeof ApiChatRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -53,13 +61,20 @@ export interface FileRoutesById {
   '/education': typeof EducationRoute
   '/major': typeof MajorRoute
   '/mental-health': typeof MentalHealthRoute
+  '/api/chat': typeof ApiChatRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/education' | '/major' | '/mental-health'
+  fullPaths: '/' | '/education' | '/major' | '/mental-health' | '/api/chat'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/education' | '/major' | '/mental-health'
-  id: '__root__' | '/' | '/education' | '/major' | '/mental-health'
+  to: '/' | '/education' | '/major' | '/mental-health' | '/api/chat'
+  id:
+    | '__root__'
+    | '/'
+    | '/education'
+    | '/major'
+    | '/mental-health'
+    | '/api/chat'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -67,6 +82,7 @@ export interface RootRouteChildren {
   EducationRoute: typeof EducationRoute
   MajorRoute: typeof MajorRoute
   MentalHealthRoute: typeof MentalHealthRoute
+  ApiChatRoute: typeof ApiChatRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -99,6 +115,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/api/chat': {
+      id: '/api/chat'
+      path: '/api/chat'
+      fullPath: '/api/chat'
+      preLoaderRoute: typeof ApiChatRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
@@ -107,6 +130,7 @@ const rootRouteChildren: RootRouteChildren = {
   EducationRoute: EducationRoute,
   MajorRoute: MajorRoute,
   MentalHealthRoute: MentalHealthRoute,
+  ApiChatRoute: ApiChatRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
