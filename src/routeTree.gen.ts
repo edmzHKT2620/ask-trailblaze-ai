@@ -9,38 +9,135 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as MentalHealthRouteImport } from './routes/mental-health'
+import { Route as MajorRouteImport } from './routes/major'
+import { Route as EducationRouteImport } from './routes/education'
+import { Route as AiChatRouteImport } from './routes/ai-chat'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as ApiChatRouteImport } from './routes/api/chat'
 
+const MentalHealthRoute = MentalHealthRouteImport.update({
+  id: '/mental-health',
+  path: '/mental-health',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const MajorRoute = MajorRouteImport.update({
+  id: '/major',
+  path: '/major',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const EducationRoute = EducationRouteImport.update({
+  id: '/education',
+  path: '/education',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AiChatRoute = AiChatRouteImport.update({
+  id: '/ai-chat',
+  path: '/ai-chat',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ApiChatRoute = ApiChatRouteImport.update({
+  id: '/api/chat',
+  path: '/api/chat',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/ai-chat': typeof AiChatRoute
+  '/education': typeof EducationRoute
+  '/major': typeof MajorRoute
+  '/mental-health': typeof MentalHealthRoute
+  '/api/chat': typeof ApiChatRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/ai-chat': typeof AiChatRoute
+  '/education': typeof EducationRoute
+  '/major': typeof MajorRoute
+  '/mental-health': typeof MentalHealthRoute
+  '/api/chat': typeof ApiChatRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/ai-chat': typeof AiChatRoute
+  '/education': typeof EducationRoute
+  '/major': typeof MajorRoute
+  '/mental-health': typeof MentalHealthRoute
+  '/api/chat': typeof ApiChatRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/'
+  fullPaths:
+    | '/'
+    | '/ai-chat'
+    | '/education'
+    | '/major'
+    | '/mental-health'
+    | '/api/chat'
   fileRoutesByTo: FileRoutesByTo
-  to: '/'
-  id: '__root__' | '/'
+  to:
+    | '/'
+    | '/ai-chat'
+    | '/education'
+    | '/major'
+    | '/mental-health'
+    | '/api/chat'
+  id:
+    | '__root__'
+    | '/'
+    | '/ai-chat'
+    | '/education'
+    | '/major'
+    | '/mental-health'
+    | '/api/chat'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  AiChatRoute: typeof AiChatRoute
+  EducationRoute: typeof EducationRoute
+  MajorRoute: typeof MajorRoute
+  MentalHealthRoute: typeof MentalHealthRoute
+  ApiChatRoute: typeof ApiChatRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/mental-health': {
+      id: '/mental-health'
+      path: '/mental-health'
+      fullPath: '/mental-health'
+      preLoaderRoute: typeof MentalHealthRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/major': {
+      id: '/major'
+      path: '/major'
+      fullPath: '/major'
+      preLoaderRoute: typeof MajorRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/education': {
+      id: '/education'
+      path: '/education'
+      fullPath: '/education'
+      preLoaderRoute: typeof EducationRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/ai-chat': {
+      id: '/ai-chat'
+      path: '/ai-chat'
+      fullPath: '/ai-chat'
+      preLoaderRoute: typeof AiChatRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/': {
       id: '/'
       path: '/'
@@ -48,22 +145,24 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/api/chat': {
+      id: '/api/chat'
+      path: '/api/chat'
+      fullPath: '/api/chat'
+      preLoaderRoute: typeof ApiChatRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  AiChatRoute: AiChatRoute,
+  EducationRoute: EducationRoute,
+  MajorRoute: MajorRoute,
+  MentalHealthRoute: MentalHealthRoute,
+  ApiChatRoute: ApiChatRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
-
-import type { getRouter } from './router.tsx'
-import type { startInstance } from './start.ts'
-declare module '@tanstack/react-start' {
-  interface Register {
-    ssr: true
-    router: Awaited<ReturnType<typeof getRouter>>
-    config: Awaited<ReturnType<typeof startInstance.getOptions>>
-  }
-}
