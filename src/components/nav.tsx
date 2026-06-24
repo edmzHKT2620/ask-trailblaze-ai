@@ -79,8 +79,7 @@ export function BottomNav() {
   const path = useRouterState({ select: (s) => s.location.pathname });
   return (
     <nav className="fixed inset-x-0 bottom-0 z-40 border-t border-border/60 bg-background/90 backdrop-blur-xl md:hidden">
-      <div className="mx-auto grid max-w-md grid-cols-4">
-        {/* Note: grid-cols matches link count below */}
+      <div className="mx-auto grid max-w-md grid-cols-5">
         {links.map((l) => {
           const active = l.to === "/" ? path === "/" : path.startsWith(l.to);
           const Icon = l.icon;
