@@ -31,6 +31,7 @@ export interface PathwayResult {
 }
 
 export function recommendPathway(a: Answers): PathwayResult | null {
+  const level = a.edu_level as string | undefined;
   const duration = a.edu_duration as string | undefined;
   const budget = a.edu_budget as string | undefined;
   const location = a.edu_location as string | undefined;
@@ -76,6 +77,25 @@ export function recommendPathway(a: Answers): PathwayResult | null {
   if (field === "Engineering") { scores["Grade 12"] += 15; scores.IGCSE += 15; }
   if (field?.includes("Business")) { scores.GED += 15; scores["University Foundation"] += 15; }
 
+  // Highest education level (incl. free-text "Other")
+  if (level === "High School Diploma / GED") { scores.GED += 20; scores["Grade 12"] += 10; reasons.GED.push("already at high-school level"); }
+  if (level === "Bachelor's Degree") { scores["University Foundation"] += 15; reasons["University Foundation"].push("bachelor's holder looking for advanced prep"); }
+  if (level === "Master's Degree") { scores["University Foundation"] += 10; }
+  if (level?.startsWith("Other:")) {
+    const custom = level.slice(6).toLowerCase();
+    const match = matchKeywords(custom, {
+      GED: ["diploma", "ged", "secondary", "high school"],
+      IGCSE: ["igcse", "o level", "cambridge", "a level"],
+      "University Foundation": ["foundation", "associate", "ncc", "hnc", "pre-university", "diploma in"],
+      "Grade 12": ["grade 12", "matriculation", "myanmar"],
+      OSSD: ["ossd", "ontario", "canadian", "canada"],
+    });
+    if (match) {
+      scores[match as Pathway] += 25;
+      reasons[match as Pathway].push(`closest match to "${custom}"`);
+    }
+  }
+
   const sorted = (Object.keys(scores) as Pathway[])
     .map((p) => ({
       pathway: p,
@@ -104,6 +124,7 @@ export interface MajorResult {
 }
 
 export function recommendMajor(a: Answers): MajorResult | null {
+  const field = a.major_field as string | undefined;
   const interest = a.major_interest as string | undefined;
   const hard = (a.major_hard as string[] | undefined) ?? [];
   const soft = (a.major_soft as string[] | undefined) ?? [];
@@ -157,6 +178,32 @@ export function recommendMajor(a: Answers): MajorResult | null {
   if (soft.includes("Teamwork")) { scores.Business += 6; scores.Engineering += 6; }
   if (soft.includes("Time Management")) { scores.Business += 6; scores["Medical & Healthcare"] += 6; }
 
+  // Preferred field of study (incl. free-text "Other")
+  const fieldMap: Record<string, Major> = {
+    "Computer Science / IT": "Information Technology (IT)",
+    "Business Administration": "Business",
+    Engineering: "Engineering",
+  };
+  if (field && fieldMap[field]) {
+    scores[fieldMap[field]] += 30;
+    reasons[fieldMap[field]].push(`stated preference for ${field}`);
+  }
+  if (field?.startsWith("Other:")) {
+    const custom = field.slice(6).toLowerCase();
+    const match = matchKeywords(custom, {
+      "Information Technology (IT)": ["it", "computer", "software", "data", "ai", "cyber", "programming", "tech"],
+      Business: ["business", "finance", "marketing", "management", "hr", "entrepreneur", "accounting", "economics"],
+      Engineering: ["engineer", "civil", "mechanical", "electrical", "biomedical", "architecture"],
+      "Medical & Healthcare": ["medical", "medicine", "nurse", "nursing", "doctor", "pharmacy", "health", "biomed"],
+      Education: ["education", "teach", "teacher", "pedagogy", "instructional"],
+      "Media & Communications": ["media", "journalism", "film", "design", "art", "communication", "pr", "advertising"],
+    });
+    if (match) {
+      scores[match as Major] += 30;
+      reasons[match as Major].push(`closest match to "${custom}"`);
+    }
+  }
+
   const sorted = (Object.keys(scores) as Major[])
     .map((m) => ({
       major: m,
@@ -166,4 +213,15 @@ export function recommendMajor(a: Answers): MajorResult | null {
     .sort((a, b) => b.match - a.match);
 
   return { ...sorted[0], alternates: sorted.slice(1, 4) };
+}
+
+// Simple keyword-based matcher for free-text "Other" answers.
+function matchKeywords(text: string, dict: Record<string, string[]>): string | null {
+  const t = text.toLowerCase();
+  let best: { key: string; hits: number } | null = null;
+  for (const [key, words] of Object.entries(dict)) {
+    const hits = words.reduce((n, w) => (t.includes(w) ? n + 1 : n), 0);
+    if (hits > 0 && (!best || hits > best.hits)) best = { key, hits };
+  }
+  return best?.key ?? null;
 }
