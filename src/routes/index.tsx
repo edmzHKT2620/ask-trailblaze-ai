@@ -72,7 +72,19 @@ function Index() {
               Take a short quiz and get a personalized pathway in minutes.
             </p>
 
+            <div className="mx-auto mt-8 w-full max-w-3xl animate-fade-in">
+              <img
+                src={heroIllustration.url}
+                alt="Students walking toward a glowing graduation cap along an educational pathway"
+                className="w-full rounded-2xl shadow-soft"
+                loading="eager"
+                width={1200}
+                height={675}
+              />
+            </div>
+
             <div className="mt-8 flex flex-wrap items-center justify-center gap-3">
+
               <Link
                 to="/ai-chat"
                 className="group inline-flex items-center gap-2 rounded-full bg-gradient-hero px-6 py-3 text-sm font-semibold text-white shadow-glow transition-transform hover:-translate-y-0.5"
