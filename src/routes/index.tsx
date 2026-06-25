@@ -1,5 +1,7 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { ArrowRight, BookOpen, Compass, GraduationCap, Heart, MessageCircle, Sparkles } from "lucide-react";
+import heroIllustration from "@/assets/hero-illustration.png.asset.json";
+
 
 export const Route = createFileRoute("/")({
   head: () => ({
