@@ -19,7 +19,6 @@ export const Route = createFileRoute("/education")({
 });
 
 const eduQuestions: Question[] = [
-  { id: "edu_level", question: "What is your highest level of education?", choices: ["High School Diploma / GED", "Bachelor's Degree", "Master's Degree", "Other (Please specify)"] },
   { id: "edu_age", question: "What is your age?", choices: ["Under 15 years old", "15–20 years old", "21–25 years old", "Above 25 years old"] },
   { id: "edu_background", question: "What is your current educational background?", choices: ["Primary School", "Secondary School", "High School"] },
   { id: "edu_english", question: "What is your current English proficiency level?", choices: ["Basic", "Elementary", "Intermediate", "Upper-Intermediate", "Advanced"] },
