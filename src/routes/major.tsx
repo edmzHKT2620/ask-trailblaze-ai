@@ -19,6 +19,7 @@ export const Route = createFileRoute("/major")({
 });
 
 const questions: Question[] = [
+  { id: "major_field", question: "What is your preferred field of study / Major?", choices: ["Computer Science / IT", "Business Administration", "Engineering", "Other (Please specify)"] },
   { id: "major_qualification", question: "Which qualification are you planning to pursue or currently have?", choices: ["GED", "IGCSE", "Grade 12", "OSSD", "University Foundation Program"] },
   { id: "major_interest", question: "Which statement best describes your interests?", choices: ["Helping People & Healthcare", "Sharing Knowledge", "Leadership & Management", "Art & Creativity", "AI & Technology", "Designing, Planning & Building Structures"] },
   { id: "major_hard", question: "Which hard skills do you currently have?", multi: true, choices: ["Programming & Data Analysis", "Leadership & Management", "Mathematics & Technical Drawing", "Design & Innovation", "Science Knowledge"] },
