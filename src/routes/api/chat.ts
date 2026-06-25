@@ -20,7 +20,7 @@ export const Route = createFileRoute("/api/chat")({
         }
 
         const gateway = createLovableAiGatewayProvider(key);
-        const model = gateway("openai/gpt-5-mini");
+        const model = gateway("google/gemini-3-flash-preview");
 
         const result = streamText({
           model,
